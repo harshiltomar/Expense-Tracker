@@ -1,6 +1,6 @@
-import 'package:expensetracker/transactions.dart';
+import 'package:expensetracker/models/transactions.dart';
 import 'package:flutter/material.dart';
-import 'transactions.dart';
+import 'models/transactions.dart';
 import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
@@ -18,15 +18,11 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-        id: '101', title: 'Oversized T', amount: 69.99, date: DateTime.now()),
-    Transaction(
-        id: '102',
-        title: 'Netflix Renewal',
-        amount: 16.53,
-        date: DateTime.now())
-  ];
+
+  // late String titleInput;
+  // late String amountInput;
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +31,7 @@ class MyHomePage extends StatelessWidget {
           title: Text('Flutter App'),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
@@ -43,6 +39,39 @@ class MyHomePage extends StatelessWidget {
               width: double.infinity,
               child:
                   Card(color: Colors.blue, elevation: 5, child: Text('CHART!')),
+            ),
+            Card(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Title'),
+                      controller: titleController,
+                      // onChanged: (val) {
+                      //   titleInput = val;
+                      // },
+                    ),
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Amount'),
+                      controller: amountController,
+                      // onChanged: (val) {
+                      //   amountInput = val;
+                      // },
+                    ),
+                    TextButton(
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.purple),
+                      child: Text('Add Transaction'),
+                      onPressed: () {
+                        print(titleController.text);
+                        print(amountController.text);
+                      },
+                    )
+                  ],
+                ),
+              ),
             ),
             Column(
               children: transactions.map((tx) {
@@ -75,7 +104,7 @@ class MyHomePage extends StatelessWidget {
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          tx.date.toString(),
+                          DateFormat.yMMMd().format(tx.date),
                           style: TextStyle(
                             color: Colors.blueGrey,
                           ),
